@@ -1,0 +1,9 @@
+option('tools', type: 'boolean', value: true)
+
+option('yaml', type: 'feature', value: 'auto')
+option('valgrind', type: 'feature', value: 'auto')
+option('python', type: 'feature', value: 'auto')
+
+# workaround https://github.com/mesonbuild/meson/issues/2992
+# meant for subproject() usage only
+option('static', type: 'boolean', value: false)
