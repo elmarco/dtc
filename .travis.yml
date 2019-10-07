@@ -6,6 +6,10 @@ env:
   # COVERITY_SCAN_TOKEN (dgibson/dtc)
   - secure: "vlHvXe618//IM9LQaKzqsrUbjs7ng0L9UCST4kJbJnFQDXvVe5JiSmJGd4ef7mm0NUv5bMRl2W3xCiu6BYAu/NvU3tMNHoLG+JgCJs0+wLJXbWOwji/NmH7olqgJG+CmpaCMXjARF6+nrTnBYHJL6cYyf4KVoV4B0I/hLUW91+s="
 
+before_install:
+  - sudo apt-get install -y python3 python3-setuptools python3-pip ninja-build
+  - pip3 install meson
+
 matrix:
   include:
     - addons:
@@ -25,9 +29,13 @@ matrix:
       script:
         - make
         - make check && make checkm
+        - meson build
+        - ninja -C build test
 
     # Check it builds properly without optional packages:
     #     python, valgrind, libyaml
     - script:
         - make
         - make check
+        - meson build
+        - ninja -C build test
