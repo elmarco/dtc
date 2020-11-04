@@ -1027,6 +1027,10 @@ pylibfdt_tests () {
     tot_tests=$((tot_tests + $total_tests))
 }
 
+setup_valgrind () {
+    VALGRIND="valgrind --tool=memcheck -q --error-exitcode=$VGCODE"
+}
+
 while getopts "vt:me" ARG ; do
     case $ARG in
 	"v")
@@ -1036,13 +1040,17 @@ while getopts "vt:me" ARG ; do
 	    TESTSETS=$OPTARG
 	    ;;
 	"m")
-	    VALGRIND="valgrind --tool=memcheck -q --error-exitcode=$VGCODE"
+	    setup_valgrind
 	    ;;
 	"e")
 	    STOP_ON_FAIL=1
 	    ;;
     esac
 done
+
+if [ -n "$WITH_VALGRIND" ]; then
+    setup_valgrind
+fi
 
 if [ -z "$TESTSETS" ]; then
     TESTSETS="libfdt utilfdt dtc dtbs_equal fdtget fdtput fdtdump fdtoverlay"

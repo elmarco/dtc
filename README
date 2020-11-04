@@ -7,6 +7,21 @@ DTC and LIBFDT are maintained by:
 David Gibson <david@gibson.dropbear.id.au>
 Jon Loeliger <jdl@jdl.com>
 
+Building
+--------
+
+This project is built with meson. See the manual for detailed usages:
+https://mesonbuild.com/Running-Meson.html
+
+In short, from the source directory, you can configure, build and test the
+project with those commands:
+$ meson builddir
+$ ninja -C builddir
+$ ninja -C builddir test
+
+For convenience, a Makefile wraps meson for you with the regular "make", "make
+check" and "make install" targets. Although further build tweaking will require
+you to invoke meson manually.
 
 Python library
 --------------
@@ -58,13 +73,12 @@ also install via the Makefile if you like, but the above is more common.
 
 To install both libfdt and pylibfdt you can use:
 
-    make install [SETUP_PREFIX=/path/to/install_dir] \
-            [PREFIX=/path/to/install_dir]
+    meson -C builddir install
 
 To disable building the python library, even if swig and Python are available,
 use:
 
-    make NO_PYTHON=1
+    meson configure builddir -Dpython=disabled
 
 
 More work remains to support all of libfdt, including access to numeric
@@ -74,8 +88,8 @@ values.
 Tests
 -----
 
-Test files are kept in the tests/ directory. Use 'make check' to build and run
-all tests.
+Test files are kept in the tests/ directory. Use 'ninja test' to build and run
+all tests (or 'make check' in the source directory).
 
 If you want to adjust a test file, be aware that tree_tree1.dts is compiled
 and checked against a binary tree from assembler macros in trees.S. So
